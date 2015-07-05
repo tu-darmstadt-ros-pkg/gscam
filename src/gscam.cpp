@@ -265,6 +265,9 @@ namespace gscam {
     // Poll the data as fast a spossible
     while(ros::ok()) 
     {
+
+      ROS_INFO("start while");
+
       // This should block until a new frame is awake, this way, we'll run at the
       // actual capture framerate of the device.
       // ROS_DEBUG("Getting data...");
@@ -333,7 +336,7 @@ namespace gscam {
       } else {
           cinfo->header.stamp = ros::Time::now();
       }
-      // ROS_INFO("Image time stamp: %.3f",cinfo->header.stamp.toSec());
+      ROS_INFO("Image time stamp: %.3f",cinfo->header.stamp.toSec());
       cinfo->header.frame_id = frame_id_;
       if (image_encoding_ == "jpeg") {
           sensor_msgs::CompressedImagePtr img(new sensor_msgs::CompressedImage());
