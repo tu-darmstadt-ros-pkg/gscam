@@ -220,9 +220,11 @@ namespace gscam {
 
     // Create ROS camera interface
     if (image_encoding_ == "jpeg") {
+        ROS_INFO("Using compressed publisher.");
         jpeg_pub_ = nh_.advertise<sensor_msgs::CompressedImage>("camera/image_raw/compressed",1);
         cinfo_pub_ = nh_.advertise<sensor_msgs::CameraInfo>("camera/camera_info",1);
     } else {
+        ROS_INFO("Using standard publisher.");
         camera_pub_ = image_transport_.advertiseCamera("camera/image_raw", 1);
     }
 
@@ -422,6 +424,7 @@ namespace gscam {
 
       if(!this->init_stream()) {
         ROS_FATAL("Failed to initialize gscam stream!");
+        ros::shutdown();
         break;
       }
 
@@ -436,7 +439,7 @@ namespace gscam {
         ROS_INFO("Reopening stream...");
       } else {
         ROS_INFO("Cleaning up stream and exiting...");
-        break;
+        ros::shutdown();
       }
     }
 
