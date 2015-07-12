@@ -413,19 +413,25 @@ namespace gscam {
       gst_object_unref(pipeline_);
       pipeline_ = NULL;
     }
+    
+    // Tried this, but results in 'no element "v4l2src"' error upon reinit
+    //gst_deinit();
   }
 
   void GSCam::run() {
     while(ros::ok()) {
+      ROS_INFO("At start of run loop");
+      
       if(!this->configure()) {
         ROS_FATAL("Failed to configure gscam!");
-        break;
+        ros::Duration(5.0).sleep();
+        continue;
       }
 
       if(!this->init_stream()) {
         ROS_FATAL("Failed to initialize gscam stream!");
-        ros::shutdown();
-        break;
+        ros::Duration(5.0).sleep();
+        continue;
       }
 
       // Block while publishing
