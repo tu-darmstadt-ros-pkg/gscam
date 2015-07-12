@@ -15,7 +15,7 @@
     output="screen">
     <param name="camera_name" value="default"/>
     <param name="camera_info_url" value="package://gscam/examples/uncalibrated_parameters.ini"/>
-    <param name="gscam_config" value="v4l2src device=/dev/camera/sa_camera ! image/jpeg,width=1280,height=720,framerate=5/1  ! videorate  !  framerate=5/1"/>
+    <param name="gscam_config" value="v4l2src device=/dev/camera/sa_camera ! image/jpeg,width=1280,height=720,framerate=5/1 ! videorate  !  framerate=5/1"/>
     <!--<param name="gscam_config" value="v4l2src device=/dev/video0 ! video/x-h264,width=1280,height=720,framerate=15/1 ! avdec_h264 ! videoconvert ! video/x-raw,format=RGB"/>-->    
     <!--<param name="gscam_config" value="v4l2src device=/dev/video0 ! video/x-h264,width=320,height=240,framerate=20/1  ! decodebin"/>-->
     <!--<param name="gscam_config" value="v4l2src device=/dev/video0 ! video/x-raw,format=RGB,width=320,height=240,framerate=30/1 ! videoconvert ! video/x-raw,format=RGB ! videoconvert"/>-->
@@ -23,5 +23,8 @@
     <param name="frame_id" value="/v4l_frame"/>
     <param name="image_encoding" value="jpeg"/>
     <param name="sync_sink" value="true"/>
+    <param name="reopen_on_eof" value="true"/>
+    <param name="use_gst_timestamps" value="true"/>
+    <param name="preroll" value="true" />
   </node>                 
 </launch>
