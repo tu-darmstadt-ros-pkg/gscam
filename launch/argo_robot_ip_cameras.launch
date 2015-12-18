@@ -9,13 +9,13 @@
   
   <include file="$(find gscam)/launch/ip_camera_common.launch">
     <arg name="camera_name" default="rear_chassis_cam" />
-    <arg name="ip" default="10.0.0.31" />
+    <arg name="ip" default="10.0.0.32" />
     <arg name="frame_id" default="rear_chassis_cam_optical_frame"/>
   </include>  
   
   <include file="$(find gscam)/launch/ip_camera_common.launch">
     <arg name="camera_name" default="arm_wide_cam" />
-    <arg name="ip" default="10.0.0.31" />
+    <arg name="ip" default="10.0.0.33" />
     <arg name="frame_id" default="arm_wide_cam_optical_frame"/>
   </include>   
 </launch>
