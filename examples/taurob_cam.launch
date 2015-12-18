@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="DEVICE" default="/dev/video0"/>
+  <!-- The GStreamer framerate needs to be an integral fraction -->
+  <arg name="FPS" default="30/1"/>
+
+  <node pkg="nodelet" type="nodelet"
+    name="standalone_nodelet" args="manager"
+    output="screen"/>
+
+  <node pkg="nodelet" type="nodelet"
+    name="GSCamNodelet" 
+    args="load gscam/GSCamNodelet standalone_nodelet" 
+    output="screen">
+    <param name="camera_name" value="default"/>
+    <param name="camera_info_url" value="package://gscam/examples/uncalibrated_parameters.ini"/>
+    <!--<param name="gscam_config" value="v4l2src device=/dev/camera/sa_camera ! image/jpeg,width=640,height=360,framerate=5/1 ! videorate  !  framerate=5/1"/>-->
+    <param name="gscam_config" value="rtspsrc location=rtsp://10.0.0.31:554/0/video0 latency=20 ! decodebin  ! video/x-raw-yuv, width=512,
+height=486, framerate=15/1 ! ffmpegcolorspace"/>
+    
+    
+    <!-- gst-launch-1.0 -v rtspsrc location=rtsp://10.0.0.31:554/0/video0 latency=20 ! decodebin ! xvimagesink-->
+    <!--<param name="gscam_config" value="v4l2src device=/dev/video0 ! video/x-h264,width=1280,height=720,framerate=15/1 ! avdec_h264 ! videoconvert ! video/x-raw,format=RGB"/>-->    
+    <!--<param name="gscam_config" value="v4l2src device=/dev/video0 ! video/x-h264,width=320,height=240,framerate=20/1  ! decodebin"/>-->
+    <!--<param name="gscam_config" value="v4l2src device=/dev/video0 ! video/x-raw,format=RGB,width=320,height=240,framerate=30/1 ! videoconvert ! video/x-raw,format=RGB ! videoconvert"/>-->
+    <!--<param name="gscam_config" value="v4l2src device=/dev/video0 ! video/x-raw,width=320,height=240,framerate=30/1"/>-->
+    <param name="frame_id" value="/v4l_frame"/>
+    <param name="image_encoding" value="rgb8"/>
+    <param name="sync_sink" value="true"/>
+    <param name="reopen_on_eof" value="true"/>
+    <param name="use_gst_timestamps" value="true"/>
+    <param name="preroll" value="true" />
+  </node>                 
+</launch>
