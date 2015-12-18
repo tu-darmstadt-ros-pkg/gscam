@@ -275,6 +275,8 @@ namespace gscam {
       // ROS_DEBUG("Getting data...");
 //#if (GST_VERSION_MAJOR == 1)
       GstSample* sample = gst_app_sink_pull_sample(GST_APP_SINK(sink_));
+      
+      //ROS_INFO("post sink");
       if(!sample) {
         ROS_ERROR("Could not get gstreamer sample.");
         break;
@@ -420,7 +422,7 @@ namespace gscam {
 
   void GSCam::run() {
     while(ros::ok()) {
-      ROS_INFO("At start of run loop");
+      //ROS_INFO("At start of run loop");
       
       if(!this->configure()) {
         ROS_FATAL("Failed to configure gscam!");
