@@ -15,6 +15,9 @@ extern "C"{
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/SetCameraInfo.h>
 
+#include <diagnostic_updater/diagnostic_updater.h>
+#include <diagnostic_updater/publisher.h>
+
 #include <stdexcept>
 
 namespace gscam {
@@ -62,6 +65,14 @@ namespace gscam {
     // Case of a jpeg only publisher
     ros::Publisher jpeg_pub_;
     ros::Publisher cinfo_pub_;
+    
+    // Diagnostics
+    boost::shared_ptr<diagnostic_updater::Updater> diagnostic_updater_;
+    boost::shared_ptr<diagnostic_updater::HeaderlessTopicDiagnostic> img_pub_freq_;
+    double diagnostics_freq_min_;
+    double diagnostics_freq_max_;
+
+
   };
 
 }

@@ -103,6 +103,18 @@ namespace gscam {
       ROS_WARN_STREAM("No camera frame_id set, using frame \""<<frame_id_<<"\".");
       nh_private_.setParam("frame_id",frame_id_);
     }
+    
+    nh_private_.param<double>("diagnostics_freq_min", diagnostics_freq_min_, 0.0);
+    nh_private_.param<double>("diagnostics_freq_max", diagnostics_freq_max_, 500.0);
+
+    
+    diagnostic_updater_.reset(new diagnostic_updater::Updater);
+    diagnostic_updater_->setHardwareID(camera_name_);
+  
+    img_pub_freq_.reset(new diagnostic_updater::HeaderlessTopicDiagnostic("Image Pub Frequency",
+          *diagnostic_updater_,
+          diagnostic_updater::FrequencyStatusParam(&diagnostics_freq_min_, &diagnostics_freq_max_)));
+
 
     return true;
   }
@@ -343,6 +355,7 @@ namespace gscam {
           std::copy(buf_data, (buf_data)+(buf_size),
                   img->data.begin());
           jpeg_pub_.publish(img);
+          img_pub_freq_->tick();
           cinfo_pub_.publish(cinfo);
       } else {
           // Complain if the returned buffer is smaller than we expect
@@ -384,7 +397,10 @@ namespace gscam {
 
           // Publish the image/info
           camera_pub_.publish(img, cinfo);
+          img_pub_freq_->tick();
       }
+      
+      diagnostic_updater_->update();
 
       // Release the buffer
       if(buf) {
