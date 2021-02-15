@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <chrono>
 
 
 #include <iostream>
@@ -274,6 +275,9 @@ namespace gscam {
     }
     ROS_INFO("Started stream.");
 
+    // Measure fps
+    auto start = std::chrono::system_clock::now();
+
     // Poll the data as fast as possible
     while(ros::ok()) 
     {
@@ -406,6 +410,11 @@ namespace gscam {
             gst_sample_unref(sample);
          }
       }
+
+      auto end = std::chrono::system_clock::now();
+      std::chrono::duration<double> elapsed = end - start;
+      ROS_INFO_STREAM("FPS: " << 1.0/elapsed.count());
+      start = end;
 
       ros::spinOnce();
     }
