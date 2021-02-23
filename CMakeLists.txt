@@ -28,7 +28,7 @@ endif()
 
 
 # Use Catkin build tools.
-find_package(catkin REQUIRED COMPONENTS roscpp image_transport sensor_msgs camera_calibration_parsers camera_info_manager )
+find_package(catkin REQUIRED COMPONENTS nodelet roscpp image_transport sensor_msgs camera_calibration_parsers camera_info_manager )
 
 catkin_package(
   INCLUDE_DIRS include
@@ -47,6 +47,13 @@ include_directories(
 
 add_library(${PROJECT_NAME} src/gscam.cpp)
 target_link_libraries(${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+  ${GSTREAMER_LIBRARIES}
+  ${GST_APP_LIBRARIES}
+)
+
+add_library(GSCamNodelet src/gscam_nodelet.cpp)
+target_link_libraries(GSCamNodelet gscam
   ${catkin_LIBRARIES}
   ${GSTREAMER_LIBRARIES}
   ${GST_APP_LIBRARIES}
